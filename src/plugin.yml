@@ -1,0 +1,80 @@
+name: MailBox
+main: me.iaccidentally.mailbox.MailBoxPlugin
+version: 1.0
+description: test
+authors: [safoo, Iaccidentally]
+softdepend: [Vault]
+commands:
+    mailbox:
+        description: mailbox commands
+        usage: /mailbox
+        aliases: [mbox]
+    msend:
+        description: send a package. The same as /mailbox send <player_name>.
+        usage: /msend <player_name>
+
+permissions:
+
+    mailbox.*:
+        description: Gives access to all mailbox commands
+        children:
+            mailbox.user.*: true
+            mailbox.admin.*: true
+            mailbox.postman.*: true
+            mailbox.nocooldown : true
+            mailbox.sendtoself : true
+
+    mailbox.user.*:
+        description: Gives access to all mailbox commands
+        children:
+            mailbox.user.create: true
+            mailbox.user.send: true
+            mailbox.user.remove: true
+
+    mailbox.admin.*:
+        description: Gives access to all doorman commands
+        children:
+            mailbox.admin.viewlog: true
+            mailbox.admin.removeany: true
+
+    mailbox.postman.*:
+        description: Gives access to all doorman commands
+        children:
+            mailbox.postman.createother: true
+            mailbox.postman.removeother: true
+
+    mailbox.user.create:
+        description: Can create own mailbox.
+        default: true
+
+    mailbox.user.send:
+        description: Can send a package.
+        default: true
+
+    mailbox.user.remove:
+        description: Can remove own mailbox.
+        default: true
+
+    mailbox.admin.viewlog:
+        description: Can view a log.
+        default: op
+
+    mailbox.admin.removeany:
+        description: Can remove any mailbox.
+        default: op
+
+    mailbox.postman.createother:
+        description: Can create a mailbox for someone else.
+        default: op
+
+    mailbox.postman.removeother:
+        description: Can remove mailboxes which he created.
+        default: op
+
+    mailbox.nocooldown :
+        description: Player does not have the send cooldown.
+        default: op
+
+    mailbox.sendtoself :
+        description: Player can send package to himself.
+        default: op
