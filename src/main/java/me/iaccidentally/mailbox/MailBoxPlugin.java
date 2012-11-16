@@ -189,7 +189,7 @@ public class MailBoxPlugin extends JavaPlugin
   public void onDisable()
   {
     this.is_running = false;
-    System.out.println("Plugin MailBox shutting down...");
+    log.log(Level.INFO, "Plugin MailBox shutting down...");
   }
 
   public Connection prepareSQL() {
@@ -268,7 +268,7 @@ public class MailBoxPlugin extends JavaPlugin
     {
       if (!alter)
       {
-	log.warning("Problem with SQL. Check config file /plugin/MailBox/settings.txt");
+	log.log(Level.WARNING, "Problem with SQL. Check config file /plugin/MailBox/settings.txt");
       }
     }
   }
@@ -339,7 +339,7 @@ public class MailBoxPlugin extends JavaPlugin
     }
     catch (SQLException e)
     {
-      log.warning("Problem with SQL. Check config file /plugin/MailBox/settings.txt");
+      log.log(Level.WARNING,"Problem with SQL. Check config file /plugin/MailBox/settings.txt");
     }
 
     return "§4Error!";
@@ -403,7 +403,8 @@ public class MailBoxPlugin extends JavaPlugin
 
       if (this.economy_on)
       {
-        if (!economy.has(player.getName(), this.creating_fee)) {
+        if (!economy.has(player.getName(), this.creating_fee)) 
+		{
           player.sendMessage("§cYou do not have enough money for create a mailbox!");
           return "Fee is §b" + economy.format(this.creating_fee) + "§f.";
         }
@@ -429,7 +430,7 @@ public class MailBoxPlugin extends JavaPlugin
     }
     catch (SQLException e)
     {
-      log.warning("Problem with SQL. Check config file /plugin/MailBox/settings.txt");
+      log.log(Level.WARNING,"Problem with SQL. Check config file /plugin/MailBox/settings.txt");
     }
 
     return "§4Error!";
@@ -462,14 +463,15 @@ public class MailBoxPlugin extends JavaPlugin
           rs.getString("receiver") + "§f :  " + rs.getString("material") + " §c" + rs.getInt("amount");
         ar.add(line);
       }
-      while (rs.next());
-        for (int i = ar.size() - 1; i >= 0; i--) {
+    while (rs.next());
+      for (int i = ar.size() - 1; i >= 0; i--) 
+	  {
         player.sendMessage((String)ar.get(i));
       }
     }
     catch (SQLException e) 
     {
-      log.warning("Problem with SQL. Check config file /plugin/MailBox/settings.txt");
+      log.log(Level.WARNING,"Problem with SQL. Check config file /plugin/MailBox/settings.txt");
 
       player.sendMessage("§4Error!");
     }
@@ -516,10 +518,13 @@ public class MailBoxPlugin extends JavaPlugin
       DecimalFormat df = new DecimalFormat("0.00");
       boolean foreign = false;
 
-      if (!sender.getWorld().equals(l.getWorld())) {
+      if (!sender.getWorld().equals(l.getWorld())) 
+	  {
         fee = this.delivery_fee + this.foreign_fee;
         foreign = true;
-      } else {
+      } 
+	  else 
+	  {
         distance = sender.getLocation().distance(l);
         distance_fee = distance / 1000.0D * this.fee_per_1000m;
         fee = this.delivery_fee + distance_fee;
@@ -528,15 +533,15 @@ public class MailBoxPlugin extends JavaPlugin
       if (this.economy_on)
       {
         sender.sendMessage("Fee for sending package to " + receiver + " is §b" + economy.format(fee) + "§f.");
-        if (foreign)
-	{
+      if (foreign)
+	  {
 	  sender.sendMessage("§b" + df.format(this.delivery_fee) + "§f is fixed fee + §b" + df.format(this.foreign_fee) + "§f is fee for sending package to another world.");
-	}
-        else
-	{
+	  }
+      else
+	  {
 	  sender.sendMessage("§b" + df.format(this.delivery_fee) + "§f is fixed fee + §b" + df.format(distance_fee) + "§f is fee for distance. (" + (int)distance + " m)");
-	}
-      }
+	  }
+	  }
       else 
       {
         sender.sendMessage("economy is off!");
@@ -546,7 +551,7 @@ public class MailBoxPlugin extends JavaPlugin
     }
     catch (SQLException e) 
     {
-      log.warning("Problem with SQL. Check config file /plugin/MailBox/settings.txt");
+      log.log(Level.WARNING,"Problem with SQL. Check config file /plugin/MailBox/settings.txt");
     }
 
     return "§4Error!";
@@ -556,7 +561,8 @@ public class MailBoxPlugin extends JavaPlugin
   {
     receiver = receiver.replace('\'', 'x');
 
-    if ((!checkpermissions(sender, "mailbox.sendtoself")) && (sender.getName().toLowerCase().equals(receiver.toLowerCase()))) {
+    if ((!checkpermissions(sender, "mailbox.sendtoself")) && (sender.getName().toLowerCase().equals(receiver.toLowerCase()))) 
+	{
       return "§cYou can't send package to yourself!";
     }
 
@@ -565,16 +571,16 @@ public class MailBoxPlugin extends JavaPlugin
     {
       for (int i = 0; i < this.cooldown.size(); i++)
       {
-	if (((Record)this.cooldown.get(i)).getPl().equalsIgnoreCase(sender.getName())) 
-	{
-	  cas = ((Record)this.cooldown.get(i)).getTime();
-	  return "§fYou have to wait §b" + cas + "§f seconds for sending new package.";
-	}
+		if (((Record)this.cooldown.get(i)).getPl().equalsIgnoreCase(sender.getName())) 
+		{
+			cas = ((Record)this.cooldown.get(i)).getTime();
+			return "§fYou have to wait §b" + cas + "§f seconds for sending new package.";
+		}
       }
     }
     catch (Exception e)
     {
-      log.warning("Problem with cooldown thread!");
+      log.log(Level.WARNING,"Problem with cooldown thread!");
     }
 
     Connection conn = prepareSQL();
@@ -611,10 +617,13 @@ public class MailBoxPlugin extends JavaPlugin
       DecimalFormat df = new DecimalFormat("0.00");
       boolean foreign = false;
 
-      if (!sender.getWorld().equals(l.getWorld())) {
+      if (!sender.getWorld().equals(l.getWorld())) 
+	  {
         fee = this.delivery_fee + this.foreign_fee;
         foreign = true;
-      } else {
+      } 
+	  else 
+	  {
         distance = sender.getLocation().distance(l);
         distance_fee = distance / 1000.0D * this.fee_per_1000m;
         fee = this.delivery_fee + distance_fee;
@@ -622,21 +631,20 @@ public class MailBoxPlugin extends JavaPlugin
 
       if (this.economy_on)
       {
-        if (!economy.has(sender.getName(), fee)) {
+        if (!economy.has(sender.getName(), fee)) 
+		{
           sender.sendMessage("§cYou don't have enough money for send a package!");
           sender.sendMessage("Fee is §b" + economy.format(fee) + "§f.");
-
           if (foreign)
-	  {
-	    sender.sendMessage("§b" + df.format(this.delivery_fee) + "§f is fixed fee + §b" + df.format(this.foreign_fee) + "§f is fee for sending package to another world.");
-	  }
+		  {
+			sender.sendMessage("§b" + df.format(this.delivery_fee) + "§f is fixed fee + §b" + df.format(this.foreign_fee) + "§f is fee for sending package to another world.");
+		  }
           else 
           {
             sender.sendMessage("§b" + df.format(this.delivery_fee) + "§f is fixed fee + §b" + df.format(distance_fee) + "§f is fee for distance. (" + (int)distance + " m)");
           }
           return "";
         }
-
         economy.depositPlayer(sender.getName(), -fee);
       }
 
@@ -647,7 +655,7 @@ public class MailBoxPlugin extends JavaPlugin
       if (_package.getType() == Material.AIR)
       {
         if (this.economy_on) 
-	{
+		{
           economy.depositPlayer(sender.getName(), fee);
         }
         return "§cYou have nothing in your hand!";
@@ -664,11 +672,11 @@ public class MailBoxPlugin extends JavaPlugin
         sender.setItemInHand(package_copy);
         Player pl = server.getPlayer(receiver);
         if (pl != null)
-	{
-	  pl.sendMessage("§cYour mailbox is full!");
-	}
+		{
+	      pl.sendMessage("§cYour mailbox is full!");
+		}
         if (this.economy_on) 
-	{
+		{
           economy.depositPlayer(sender.getName(), fee);
         }
         return "§c" + receiver + "'s mailbox is full!";
@@ -679,7 +687,7 @@ public class MailBoxPlugin extends JavaPlugin
 
       if (pl != null)
       {
-	pl.sendMessage("§aYou have new package in your mailbox!");
+		pl.sendMessage("§aYou have new package in your mailbox!");
       }
 
       if ((this.economy_on) && (!postman.equalsIgnoreCase(receiver))) 
@@ -706,7 +714,7 @@ public class MailBoxPlugin extends JavaPlugin
     }
     catch (SQLException e)
     {
-      log.warning("Problem with SQL. Check config file /plugin/MailBox/settings.txt");
+      log.log(Level.WARNING,"Problem with SQL. Check config file /plugin/MailBox/settings.txt");
     }
     return "§4Error!";
   }
@@ -723,17 +731,16 @@ public class MailBoxPlugin extends JavaPlugin
       if ((args.length == 1) && (args[0].equals("-reload"))) 
       {
         prepareSettings();
-        log.info("Settings reloaded");
+        log.log(Level.INFO,"Settings reloaded");
         return true;
       }
-      log.info("You can't use this command in console!");
+      log.log(Level.INFO,"You can't use this command in console!");
       return true;
     }
 
     Player player = (Player)sender;
 
-    if ((command.getName().equalsIgnoreCase("msend")) && 
-      (args.length == 0)) 
+    if ((command.getName().equalsIgnoreCase("msend")) && (args.length == 0)) 
     {
       player.sendMessage("For sending §c/msend <player_name>");
       return true;
@@ -780,7 +787,9 @@ public class MailBoxPlugin extends JavaPlugin
       {
         createfor = args[1];
         player.sendMessage("§2Please left click chest to create " + createfor + "'s mailbox.");
-      } else {
+      } 
+	  else 
+	  {
         player.sendMessage("§2Please left click your chest to create your mailbox.");
       }
 
@@ -832,7 +841,7 @@ public class MailBoxPlugin extends JavaPlugin
       else 
       {
         if (args.length == 1) 
-	{
+		{
           player.sendMessage("For send a package write: §c/mailbox send <player_name>");
           return true;
         }
@@ -871,12 +880,12 @@ public class MailBoxPlugin extends JavaPlugin
       if (args.length == 2) 
       {
         try 
-	{
+		{
           page = Integer.parseInt(args[1]);
           page--;
         } 
-	catch (Exception e) 
-	{
+		catch (Exception e) 
+		{
           player.sendMessage("§cWrong page number!");
         }
       }
