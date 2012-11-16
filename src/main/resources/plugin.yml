@@ -1,8 +1,8 @@
 name: MailBox
 main: me.iaccidentally.mailbox.MailBoxPlugin
 version: 1.0
-description: test
 authors: [safoo, Iaccidentally]
+description: Mailbox plugin for bukkit
 softdepend: [Vault]
 commands:
     mailbox:

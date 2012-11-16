@@ -4,7 +4,7 @@
 
   <groupId>me.Iaccidentally</groupId>
   <artifactId>MailBox</artifactId>
-  <version>1.0</version>
+  <version>2.6-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>MailBox</name>
@@ -34,16 +34,21 @@
       <version>${bukkit.version}</version>
     </dependency>
     <dependency>
-      <groupId>net.milkbowl.vault</groupId>
-      <artifactId>Vault</artifactId>
-      <version>1.2.20-SNAPSHOT</version>
-    </dependency>
+			<groupId>net.milkbowl.vault</groupId>
+			<artifactId>Vault</artifactId>
+			<version>1.2.20-SNAPSHOT</version>
+		</dependency>
+    <dependency>
+			<groupId>net.milkbowl</groupId>
+			<artifactId>Vault</artifactId>
+			<version>1.2</version>
+      <type>jar</type>
+		</dependency>
   </dependencies>
   
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <bukkit.version>1.4.4-R0.1-SNAPSHOT</bukkit.version>
-    <build.number>Unknown</build.number>
     <org-netbeans-modules-editor-indent.CodeStyle.project.expand-tabs>true</org-netbeans-modules-editor-indent.CodeStyle.project.expand-tabs>
     <org-netbeans-modules-editor-indent.CodeStyle.project.indent-shift-width>2</org-netbeans-modules-editor-indent.CodeStyle.project.indent-shift-width>
     <org-netbeans-modules-editor-indent.CodeStyle.project.spaces-per-tab>2</org-netbeans-modules-editor-indent.CodeStyle.project.spaces-per-tab>

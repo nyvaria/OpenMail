@@ -1,13 +1,9 @@
 package me.iaccidentally.mailbox;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -114,7 +110,7 @@ public class MailBoxPlugin extends JavaPlugin
 
     prepareTables();
 
-    checkVersion();
+    //checkVersion();
 
     getServer().getPluginManager().registerEvents(new MailBoxPlayerListener(this), this);
 
@@ -200,7 +196,7 @@ public class MailBoxPlugin extends JavaPlugin
     return conn;
   }
 
-  public void checkVersion()
+  /*public void checkVersion()
   {
     InputStream is = null;
 
@@ -227,7 +223,7 @@ public class MailBoxPlugin extends JavaPlugin
     {
       log.info("[MailBox]: Can't find out information about newest plugin version.");
     }
-  }
+  }*/
 
   public void prepareTables()
   {
