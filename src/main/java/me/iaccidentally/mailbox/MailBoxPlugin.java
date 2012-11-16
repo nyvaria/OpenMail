@@ -509,7 +509,7 @@ public class MailBoxPlugin extends JavaPlugin
         return "§c" + receiver + "'s mailbox is damaged!";
       }
 
-      double fee = 0.0D;
+      double fee;
       double distance = 0.0D;
       double distance_fee = 0.0D;
 
@@ -560,7 +560,7 @@ public class MailBoxPlugin extends JavaPlugin
       return "§cYou can't send package to yourself!";
     }
 
-    int cas = 0;
+    int cas;
     try
     {
       for (int i = 0; i < this.cooldown.size(); i++)
@@ -606,7 +606,7 @@ public class MailBoxPlugin extends JavaPlugin
 
       double distance = 0.0D;
       double distance_fee = 0.0D;
-      double fee = 0.0D;
+      double fee;
 
       DecimalFormat df = new DecimalFormat("0.00");
       boolean foreign = false;
@@ -818,7 +818,7 @@ public class MailBoxPlugin extends JavaPlugin
         return true;
       }
 
-      String playername = "";
+      String playername;
 
       if (command.getName().equalsIgnoreCase("msend")) 
       {
@@ -846,7 +846,7 @@ public class MailBoxPlugin extends JavaPlugin
 
     if (args[0].equals("check"))
     {
-      String playername = "";
+      String playername;
       if (args.length == 1) 
       {
         player.sendMessage("For check a fee for delivery a package, write: §c/mailbox check <player_name>");
