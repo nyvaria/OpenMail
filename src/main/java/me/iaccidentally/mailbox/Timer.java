@@ -3,8 +3,7 @@ package me.iaccidentally.mailbox;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
-public class Timer
-  implements Runnable
+public class Timer implements Runnable
 {
   private MailBoxPlugin plugin;
 
@@ -23,12 +22,12 @@ public class Timer
       {
         Record r = (Record)h.get(i);
         if (r.getTime() <= 1) 
-	{
+		{
           h.remove(i);
           i--;
         } 
-	else 
-	{
+		else 
+		{
           r.setTime(r.getTime() - 1);
         }
       }

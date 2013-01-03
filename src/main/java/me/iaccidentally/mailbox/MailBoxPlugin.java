@@ -48,7 +48,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class MailBoxPlugin extends JavaPlugin
 {
-  private final MailBoxPlayerListener playerListener = new MailBoxPlayerListener(this);
+  private final MailBoxPlayerListener MailBoxPlayerListener = new MailBoxPlayerListener(this);
   private final HashMap<Player, Boolean> debugees = new HashMap();
   public final HashMap<Player, String> akcia = new HashMap();
   public final ArrayList<Record> cooldown = new ArrayList();
@@ -117,7 +117,7 @@ public class MailBoxPlugin extends JavaPlugin
     this.economy_on = setupEconomy().booleanValue();
     if (!this.economy_on)
     {
-	log.info("[MailBox] Economy plugin not found.");
+		log.info("[MailBox] Economy plugin not found.");
     }
     else 
     {
@@ -145,15 +145,15 @@ public class MailBoxPlugin extends JavaPlugin
 
     if (rsp == null)
     {
-	return Boolean.valueOf(false);
+		return Boolean.valueOf(false);
     }
 
     economy = (Economy)rsp.getProvider();
     if (economy != null)
     {
-	return Boolean.valueOf(true);
+		return Boolean.valueOf(true);
     } 
-    return Boolean.valueOf(false);
+		return Boolean.valueOf(false);
   }
 
   public boolean checkpermissions(Player player, String string)
@@ -268,7 +268,7 @@ public class MailBoxPlugin extends JavaPlugin
     {
       if (!alter)
       {
-	log.log(Level.WARNING, "Problem with SQL. Check config file /plugin/MailBox/settings.txt");
+		log.log(Level.WARNING, "Problem with SQL. Check config file /plugin/MailBox/settings.txt");
       }
     }
   }
@@ -296,7 +296,7 @@ public class MailBoxPlugin extends JavaPlugin
       if (!rs.next()) 
       {
         if (remove_self) 
-	{
+		{
           return "You don't have a mailbox yet! Use §c/mailbox create§f to create it.";
         }
         return "Player " + owner + " don't have a mailbox!";
@@ -304,11 +304,11 @@ public class MailBoxPlugin extends JavaPlugin
 
       if (remove_self)
       {
-	remove = true;
+		remove = true;
       }
       if (checkpermissions(player, "mailbox.admin.removeany"))
       {
-	remove = true;
+		remove = true;
       }
       if ((checkpermissions(player, "mailbox.postman.removeother")) && (rs.getString("createdby").equals(player.getName()))) 
       {
@@ -333,7 +333,7 @@ public class MailBoxPlugin extends JavaPlugin
       Player pl = Bukkit.getServer().getPlayer(owner);
       if (pl != null)
       {
-	pl.sendMessage("§cYour mailbox was removed by " + player.getName() + "!");
+		pl.sendMessage("§cYour mailbox was removed by " + player.getName() + "!");
       }
       return "§a" + owner + "'s mailbox removed successfully.";
     }
@@ -359,7 +359,7 @@ public class MailBoxPlugin extends JavaPlugin
       pl = Bukkit.getServer().getPlayer(owner);
       if (pl == null)
       {
-	return "Player " + owner + " has to be online during mailbox creating!";
+		return "Player " + owner + " has to be online during mailbox creating!";
       }
       owner = pl.getName();
     }
@@ -376,7 +376,7 @@ public class MailBoxPlugin extends JavaPlugin
       if (rs.getInt("pocet") > 0) {
         conn.close();
         if (self_creating) 
-	{
+		{
           return "You already have a mailbox! Use §c/mailbox remove§f to remove it.";
         }
         return pl.getName() + " already has a mailbox!";
@@ -463,7 +463,7 @@ public class MailBoxPlugin extends JavaPlugin
           rs.getString("receiver") + "§f :  " + rs.getString("material") + " §c" + rs.getInt("amount");
         ar.add(line);
       }
-    while (rs.next());
+	  while (rs.next());
       for (int i = ar.size() - 1; i >= 0; i--) 
 	  {
         player.sendMessage((String)ar.get(i));
@@ -533,20 +533,19 @@ public class MailBoxPlugin extends JavaPlugin
       if (this.economy_on)
       {
         sender.sendMessage("Fee for sending package to " + receiver + " is §b" + economy.format(fee) + "§f.");
-      if (foreign)
-	  {
-	  sender.sendMessage("§b" + df.format(this.delivery_fee) + "§f is fixed fee + §b" + df.format(this.foreign_fee) + "§f is fee for sending package to another world.");
-	  }
-      else
-	  {
-	  sender.sendMessage("§b" + df.format(this.delivery_fee) + "§f is fixed fee + §b" + df.format(distance_fee) + "§f is fee for distance. (" + (int)distance + " m)");
-	  }
+		if (foreign)
+		{
+			sender.sendMessage("§b" + df.format(this.delivery_fee) + "§f is fixed fee + §b" + df.format(this.foreign_fee) + "§f is fee for sending package to another world.");
+		}
+		else
+		{
+			sender.sendMessage("§b" + df.format(this.delivery_fee) + "§f is fixed fee + §b" + df.format(distance_fee) + "§f is fee for distance. (" + (int)distance + " m)");
+		}
 	  }
       else 
       {
         sender.sendMessage("economy is off!");
       }
-
       return "";
     }
     catch (SQLException e) 
