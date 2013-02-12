@@ -1,6 +1,6 @@
 name: MailBox
 main: me.iaccidentally.mailbox.MailBoxPlugin
-version: 1.0
+version: 2.7
 authors: [safoo, Iaccidentally]
 description: Mailbox plugin for bukkit
 softdepend: [Vault]
@@ -21,8 +21,8 @@ permissions:
             mailbox.user.*: true
             mailbox.admin.*: true
             mailbox.postman.*: true
-            mailbox.nocooldown : true
-            mailbox.sendtoself : true
+            mailbox.nocooldown: true
+            mailbox.sendtoself: true
 
     mailbox.user.*:
         description: Gives access to all mailbox commands
@@ -71,10 +71,10 @@ permissions:
         description: Can remove mailboxes which he created.
         default: op
 
-    mailbox.nocooldown :
+    mailbox.nocooldown:
         description: Player does not have the send cooldown.
         default: op
 
-    mailbox.sendtoself :
+    mailbox.sendtoself:
         description: Player can send package to himself.
         default: op
