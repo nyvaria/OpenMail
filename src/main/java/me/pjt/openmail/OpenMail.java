@@ -46,9 +46,9 @@ import java.util.logging.Logger;
 
 public class OpenMail extends JavaPlugin {
     private final OpenMailListener MailBoxPlayerListener = new OpenMailListener(this);
-    private final HashMap<Player, Boolean> debugees = new HashMap();
-    public final HashMap<Player, String> akcia = new HashMap();
-    public final ArrayList<Record> cooldown = new ArrayList();
+    private final HashMap<Player, Boolean> debugees = new HashMap<Player, Boolean>();
+    public final HashMap<Player, String> akcia = new HashMap<Player, String>();
+    public final ArrayList<Record> cooldown = new ArrayList<Record>();
     public static String db_file = "db_file.db";
     public String mysql_database = "";
     public String mysql_user = "";
@@ -110,7 +110,7 @@ public class OpenMail extends JavaPlugin {
 
         prepareSettings();
 
-        this.economy_on = setupEconomy().booleanValue();
+        this.economy_on = setupEconomy();
         if (!this.economy_on) {
             log.info("[MailBox] Economy plugin not found.");
         } else {
@@ -132,20 +132,17 @@ public class OpenMail extends JavaPlugin {
 
     private Boolean setupEconomy() {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
-            return Boolean.valueOf(false);
+            return false;
         }
 
         RegisteredServiceProvider rsp = getServer().getServicesManager().getRegistration(Economy.class);
 
         if (rsp == null) {
-            return Boolean.valueOf(false);
+            return false;
         }
 
         economy = (Economy) rsp.getProvider();
-        if (economy != null) {
-            return Boolean.valueOf(true);
-        }
-        return Boolean.valueOf(false);
+        return (economy != null);
     }
 
     public boolean checkpermissions(Player player, String string) {
@@ -334,11 +331,11 @@ public class OpenMail extends JavaPlugin {
             }
 
             if (this.economy_on) {
-                if (!economy.has(player.getName(), this.creating_fee)) {
+                if (!economy.has(player, this.creating_fee)) {
                     player.sendMessage("§cYou do not have enough money for create a openmail!");
                     return "Fee is §b" + economy.format(this.creating_fee) + "§f.";
                 }
-                economy.depositPlayer(player.getName(), -this.creating_fee);
+                economy.depositPlayer(player, -this.creating_fee);
             }
 
             String InsertQuery = "INSERT INTO mailboxes (playername, createdby, coordinates, world, date) VALUES ('"
@@ -473,9 +470,9 @@ public class OpenMail extends JavaPlugin {
 
         int cas;
         try {
-            for (int i = 0; i < this.cooldown.size(); i++) {
-                if (((Record) this.cooldown.get(i)).getPl().equalsIgnoreCase(sender.getName())) {
-                    cas = ((Record) this.cooldown.get(i)).getTime();
+            for (Record aCooldown : this.cooldown) {
+                if (((Record) aCooldown).getPl().equalsIgnoreCase(sender.getName())) {
+                    cas = ((Record) aCooldown).getTime();
                     return "§fYou have to wait §b" + cas + "§f seconds for sending new package.";
                 }
             }
@@ -525,7 +522,7 @@ public class OpenMail extends JavaPlugin {
             }
 
             if (this.economy_on) {
-                if (!economy.has(sender.getName(), fee)) {
+                if (!economy.has(sender, fee)) {
                     sender.sendMessage("§cYou don't have enough money for send a package!");
                     sender.sendMessage("Fee is §b" + economy.format(fee) + "§f.");
                     if (foreign) {
@@ -535,7 +532,7 @@ public class OpenMail extends JavaPlugin {
                     }
                     return "";
                 }
-                economy.depositPlayer(sender.getName(), -fee);
+                economy.depositPlayer(sender, -fee);
             }
 
             Chest chest = (Chest) l.getBlock().getState();
@@ -544,7 +541,7 @@ public class OpenMail extends JavaPlugin {
 
             if (_package.getType() == Material.AIR) {
                 if (this.economy_on) {
-                    economy.depositPlayer(sender.getName(), fee);
+                    economy.depositPlayer(sender, fee);
                 }
                 return "§cYou have nothing in your hand!";
             }
@@ -552,16 +549,10 @@ public class OpenMail extends JavaPlugin {
             ItemStack package_copy = new ItemStack(_package.getType(), _package.getAmount());
             package_copy.setDurability(_package.getDurability());
 
-            HashMap nevoslo = chest.getInventory().addItem(new ItemStack[]
-                    {
-                            _package
-                    });
+            HashMap nevoslo = chest.getInventory().addItem(_package);
 
             if (nevoslo.size() > 0) {
-                chest.getInventory().removeItem(new ItemStack[]
-                        {
-                                new ItemStack(_package.getType(), _package.getAmount() - _package.getAmount())
-                        });
+                chest.getInventory().removeItem(new ItemStack(_package.getType(), _package.getAmount() - _package.getAmount()));
                 sender.setItemInHand(package_copy);
                 Player pl = server.getPlayer(receiver);
                 if (pl != null) {
@@ -767,13 +758,10 @@ public class OpenMail extends JavaPlugin {
     }
 
     public boolean isDebugging(Player player) {
-        if (this.debugees.containsKey(player)) {
-            return ((Boolean) this.debugees.get(player)).booleanValue();
-        }
-        return false;
+        return this.debugees.containsKey(player) && (Boolean) this.debugees.get(player);
     }
 
     public void setDebugging(Player player, boolean value) {
-        this.debugees.put(player, Boolean.valueOf(value));
+        this.debugees.put(player, value);
     }
 }

@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 public class Timer implements Runnable {
-    private OpenMail plugin;
+    private final OpenMail plugin;
 
     public Timer(OpenMail plugin) {
         this.plugin = plugin;
