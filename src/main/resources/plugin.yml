@@ -4,7 +4,7 @@ version: ${pom.version}
 website: ${pom.url}
 authors: [safoo, Iaccidentally, captbunzo]
 
-main: me.pjt.mailbox.OpenMail
+main: me.pjt.openmail.OpenMail
 softdepend: [Vault]
 
 commands:

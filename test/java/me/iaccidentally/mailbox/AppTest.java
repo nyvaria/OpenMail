@@ -1,4 +1,4 @@
-package me.pjt.mailbox;
+package me.pjt.openmail;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

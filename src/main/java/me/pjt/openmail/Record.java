@@ -13,7 +13,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.pjt.mailbox;
+package me.pjt.openmail;
 
 public class Record {
     private String player;

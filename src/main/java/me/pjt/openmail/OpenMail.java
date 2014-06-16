@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.pjt.mailbox;
+package me.pjt.openmail;
 
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
@@ -96,7 +96,7 @@ public class OpenMail extends JavaPlugin {
                 out.write("only_op = false\r\n");
                 out.write("disable_in_creative = false\r\n");
                 out.write("use_mysql = false\r\n");
-                out.write("mysql_database = jdbc:mysql://localhost:3306/mailbox\r\n");
+                out.write("mysql_database = jdbc:mysql://localhost:3306/openmail\r\n");
                 out.write("mysql_user = root\r\n");
                 out.write("mysql_pass = password");
                 out.close();
@@ -241,30 +241,30 @@ public class OpenMail extends JavaPlugin {
             boolean remove = false;
             if (!rs.next()) {
                 if (remove_self) {
-                    return "You don't have a mailbox yet! Use §c/mailbox create§f to create it.";
+                    return "You don't have a openmail yet! Use §c/openmail create§f to create it.";
                 }
-                return "Player " + owner + " don't have a mailbox!";
+                return "Player " + owner + " don't have a openmail!";
             }
 
             if (remove_self) {
                 remove = true;
             }
-            if (checkpermissions(player, "mailbox.admin.removeany")) {
+            if (checkpermissions(player, "openmail.admin.removeany")) {
                 remove = true;
             }
-            if ((checkpermissions(player, "mailbox.postman.removeother")) && (rs.getString("createdby").equals(player.getName()))) {
+            if ((checkpermissions(player, "openmail.postman.removeother")) && (rs.getString("createdby").equals(player.getName()))) {
                 remove = true;
             }
 
             if (!remove) {
-                return "§cYou don't have permission for remove this mailbox!";
+                return "§cYou don't have permission for remove this openmail!";
             }
 
             String DeleteQuery = "DELETE FROM mailboxes WHERE LOWER(playername) = '" + owner.toLowerCase() + "'";
 
             stmt.execute(DeleteQuery);
 
-            log.log(Level.INFO, "MailBox: {0} has removed {1}''s mailbox.", new Object[]
+            log.log(Level.INFO, "MailBox: {0} has removed {1}''s openmail.", new Object[]
                     {
                             player.getName(), owner
                     });
@@ -274,9 +274,9 @@ public class OpenMail extends JavaPlugin {
             }
             Player pl = Bukkit.getServer().getPlayer(owner);
             if (pl != null) {
-                pl.sendMessage("§cYour mailbox was removed by " + player.getName() + "!");
+                pl.sendMessage("§cYour openmail was removed by " + player.getName() + "!");
             }
-            return "§a" + owner + "'s mailbox removed successfully.";
+            return "§a" + owner + "'s openmail removed successfully.";
         } catch (SQLException e) {
             log.log(Level.WARNING, "Problem with SQL. Check config file /plugin/MailBox/settings.txt");
         }
@@ -295,7 +295,7 @@ public class OpenMail extends JavaPlugin {
             self_creating = false;
             pl = Bukkit.getServer().getPlayer(owner);
             if (pl == null) {
-                return "Player " + owner + " must be online to have a mailbox created!";
+                return "Player " + owner + " must be online to have a openmail created!";
             }
             owner = pl.getName();
         }
@@ -311,9 +311,9 @@ public class OpenMail extends JavaPlugin {
             if (rs.getInt("pocet") > 0) {
                 conn.close();
                 if (self_creating) {
-                    return "You already have a mailbox! Use §c/mailbox remove§f to remove it.";
+                    return "You already have a openmail! Use §c/openmail remove§f to remove it.";
                 }
-                return pl.getName() + " already has a mailbox!";
+                return pl.getName() + " already has a openmail!";
             }
 
             if (block.getType() != Material.CHEST) {
@@ -330,12 +330,12 @@ public class OpenMail extends JavaPlugin {
 
             if (rs2.getInt("pocet") > 0) {
                 conn.close();
-                return "§cOn this position is already created mailbox. Choose another one.";
+                return "§cOn this position is already created openmail. Choose another one.";
             }
 
             if (this.economy_on) {
                 if (!economy.has(player.getName(), this.creating_fee)) {
-                    player.sendMessage("§cYou do not have enough money for create a mailbox!");
+                    player.sendMessage("§cYou do not have enough money for create a openmail!");
                     return "Fee is §b" + economy.format(this.creating_fee) + "§f.";
                 }
                 economy.depositPlayer(player.getName(), -this.creating_fee);
@@ -349,7 +349,7 @@ public class OpenMail extends JavaPlugin {
                     + System.currentTimeMillis() + ")";
 
             stmt.execute(InsertQuery);
-            log.log(Level.INFO, "MailBox: {0} has created the mailbox for {1}. [{2}]", new Object[]
+            log.log(Level.INFO, "MailBox: {0} has created the openmail for {1}. [{2}]", new Object[]
                     {
                             player.getName(), owner, loc
                     });
@@ -357,8 +357,8 @@ public class OpenMail extends JavaPlugin {
             if (self_creating) {
                 return "§aMailbox created successfully.";
             }
-            pl.sendMessage("§aYour mailbox was created successfully by " + player.getName() + "!");
-            return "§a" + pl.getName() + "'s mailbox created successfully.";
+            pl.sendMessage("§aYour openmail was created successfully by " + player.getName() + "!");
+            return "§a" + pl.getName() + "'s openmail created successfully.";
         } catch (SQLException e) {
             log.log(Level.WARNING, "Problem with SQL. Check config file /plugin/MailBox/settings.txt");
         }
@@ -415,7 +415,7 @@ public class OpenMail extends JavaPlugin {
             boolean naslo = rs.next();
 
             if (!naslo) {
-                return "§cPlayer " + receiver + " doesn't have a mailbox!";
+                return "§cPlayer " + receiver + " doesn't have a openmail!";
             }
             receiver = rs.getString("playername");
             String world = rs.getString("world");
@@ -427,7 +427,7 @@ public class OpenMail extends JavaPlugin {
             Location l = new Location(server.getWorld(world), x, y, z);
 
             if (l.getBlock().getType() != Material.CHEST) {
-                return "§c" + receiver + "'s mailbox is damaged!";
+                return "§c" + receiver + "'s openmail is damaged!";
             }
 
             double fee;
@@ -467,7 +467,7 @@ public class OpenMail extends JavaPlugin {
     public String sendPackage(Player sender, String receiver) {
         receiver = receiver.replace('\'', 'x');
 
-        if ((!checkpermissions(sender, "mailbox.sendtoself")) && (sender.getName().toLowerCase().equals(receiver.toLowerCase()))) {
+        if ((!checkpermissions(sender, "openmail.sendtoself")) && (sender.getName().toLowerCase().equals(receiver.toLowerCase()))) {
             return "§cYou can't send package to yourself!";
         }
 
@@ -495,7 +495,7 @@ public class OpenMail extends JavaPlugin {
             boolean naslo = rs.next();
 
             if (!naslo) {
-                return "§cPlayer " + receiver + " doesn't have a mailbox!";
+                return "§cPlayer " + receiver + " doesn't have a openmail!";
             }
             receiver = rs.getString("playername");
             String postman = rs.getString("createdby");
@@ -565,27 +565,27 @@ public class OpenMail extends JavaPlugin {
                 sender.setItemInHand(package_copy);
                 Player pl = server.getPlayer(receiver);
                 if (pl != null) {
-                    pl.sendMessage("§cYour mailbox is full!");
+                    pl.sendMessage("§cYour openmail is full!");
                 }
                 if (this.economy_on) {
-                    return "§c" + receiver + "'s mailbox is full!";
+                    return "§c" + receiver + "'s openmail is full!";
                     //economy.depositPlayer(sender.getName(), fee);
                 }
-                return "§c" + receiver + "'s mailbox is full!";
+                return "§c" + receiver + "'s openmail is full!";
             }
 
             sender.getInventory().clear(sender.getInventory().getHeldItemSlot());
             Player pl = server.getPlayer(receiver);
 
             if (pl != null) {
-                pl.sendMessage("§aYou have new package in your mailbox!");
+                pl.sendMessage("§aYou have new package in your openmail!");
             }
 
             if ((this.economy_on) && (!postman.equalsIgnoreCase(receiver))) {
                 economy.depositPlayer(postman, fee * this.postman_profit);
             }
 
-            if (!checkpermissions(sender, "mailbox.nocooldown")) {
+            if (!checkpermissions(sender, "openmail.nocooldown")) {
                 this.cooldown.add(new Record(sender.getName(), this.cooldown_limit));
             }
             log.log(Level.INFO, "MailBox: {0} has sent the package to {1}. [{2}:{3}]", new Object[]
@@ -636,18 +636,18 @@ public class OpenMail extends JavaPlugin {
             player.sendMessage("§OpenMail Plugin help:");
             player.sendMessage("§c/mail fees §f- Check the fees.");
             player.sendMessage("§c/mail help §f- Plugin help.");
-            player.sendMessage("§c/mail createbox §f- Create a mailbox.");
-            player.sendMessage("§c/mail removebox §f- Remove a mailbox.");
+            player.sendMessage("§c/mail createbox §f- Create a openmail.");
+            player.sendMessage("§c/mail removebox §f- Remove a openmail.");
             player.sendMessage("§c/v check <player_name> §f- Check the delivery fee for sending the package to <player_name>.");
             player.sendMessage("§c/mail send <player_name> §f- Send a package to a player.");
 
             //TODO: remove op references
             if ((checkpermissions(player, "mail.postman.createother")) || (player.isOp())) {
-                player.sendMessage("§c/mail create <player_name> §f- Create a mailbox for someone else.");
+                player.sendMessage("§c/mail create <player_name> §f- Create a openmail for someone else.");
             }
 
             if ((checkpermissions(player, "openmail.postman.removeother")) || (checkpermissions(player, "openmail.admin.removeany")) || (player.isOp())) {
-                player.sendMessage("§c/mail remove <player_name> §f- Remove <player_name>'s mailbox.");
+                player.sendMessage("§c/mail remove <player_name> §f- Remove <player_name>'s openmail.");
             }
 
             if ((checkpermissions(player, "openmail.admin.viewlog")) || (player.isOp())) {
@@ -658,7 +658,7 @@ public class OpenMail extends JavaPlugin {
 
         if (args[0].equals("create")) {
             if ((!checkpermissions(player, "openmail.user.create")) && (!checkpermissions(player, "openmail.postman.createother")) && (this.only_op)) {
-                player.sendMessage("§cYou don't have a permission to create a mailbox!");
+                player.sendMessage("§cYou don't have a permission to create a openmail!");
                 return true;
             }
 
@@ -666,9 +666,9 @@ public class OpenMail extends JavaPlugin {
 
             if ((checkpermissions(player, "openmail.postman.createother")) && (args.length == 2)) {
                 createfor = args[1];
-                player.sendMessage("§2Please left click chest to create " + createfor + "'s mailbox.");
+                player.sendMessage("§2Please left click chest to create " + createfor + "'s openmail.");
             } else {
-                player.sendMessage("§2Please left click your chest to create your mailbox.");
+                player.sendMessage("§2Please left click your chest to create your openmail.");
             }
 
             if (this.akcia.get(player) != null) {
@@ -680,7 +680,7 @@ public class OpenMail extends JavaPlugin {
 
         if (args[0].equals("remove")) {
             if ((!checkpermissions(player, "openmail.user.remove")) && (!checkpermissions(player, "openmail.postman.removeother")) && (!checkpermissions(player, "openmail.admin.removeany")) && (this.only_op)) {
-                player.sendMessage("§cYou don't have a permission to remove a mailbox!");
+                player.sendMessage("§cYou don't have a permission to remove a openmail!");
                 return true;
             }
 
@@ -756,7 +756,7 @@ public class OpenMail extends JavaPlugin {
             if (!this.economy_on) {
                 player.sendMessage("§ceconomy is off!");
             } else {
-                player.sendMessage("The fee for creating the mailbox is §b" + economy.format(this.creating_fee) + "§f.");
+                player.sendMessage("The fee for creating the openmail is §b" + economy.format(this.creating_fee) + "§f.");
                 player.sendMessage("Fixed fee for delivery is §b" + economy.format(this.delivery_fee) + "§f");
                 player.sendMessage("+  §b" + economy.format(this.fee_per_1000m) + "§f per 1000 meters. (In the same World)");
                 player.sendMessage("OR §b" + economy.format(this.foreign_fee) + "§f when you send package to another World.");
