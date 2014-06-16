@@ -1,80 +1,81 @@
-name: MailBox
-main: me.iaccidentally.mailbox.MailBoxPlugin
-version: 2.7
-authors: [safoo, Iaccidentally]
-description: Mailbox plugin for bukkit
+name: ${pom.name}
+description: ${pom.description}
+version: ${pom.version}
+website: ${pom.url}
+authors: [safoo, Iaccidentally, captbunzo]
+
+main: me.pjt.mailbox.OpenMail
 softdepend: [Vault]
+
 commands:
-    mailbox:
-        description: mailbox commands
-        usage: /mailbox
-        aliases: [mbox]
-    msend:
-        description: send a package. The same as /mailbox send <player_name>.
-        usage: /msend <player_name>
+  mail:
+    description: mailbox commands
+    usage: /mail
+  msend:
+    description: send a package. The same as /mail send <player_name>.
+    usage: /send <player_name>
 
 permissions:
+  openmail.*:
+    description: Gives access to all mail commands
+    children:
+      openmail.user.*: true
+      openmail.admin.*: true
+      openmail.postman.*: true
+      openmail.nocooldown: true
+      openmail.sendtoself: true
 
-    mailbox.*:
-        description: Gives access to all mailbox commands
-        children:
-            mailbox.user.*: true
-            mailbox.admin.*: true
-            mailbox.postman.*: true
-            mailbox.nocooldown: true
-            mailbox.sendtoself: true
+  openmail.user.*:
+    description: Gives access to all mail commands
+    children:
+      openmail.user.create: true
+      openmail.user.send: true
+      openmail.user.remove: true
 
-    mailbox.user.*:
-        description: Gives access to all mailbox commands
-        children:
-            mailbox.user.create: true
-            mailbox.user.send: true
-            mailbox.user.remove: true
+  openmail.admin.*:
+    description: Gives access to all postman commands
+    children:
+      openmail.admin.viewlog: true
+      openmail.admin.removeany: true
 
-    mailbox.admin.*:
-        description: Gives access to all doorman commands
-        children:
-            mailbox.admin.viewlog: true
-            mailbox.admin.removeany: true
+  openmail.postman.*:
+    description: Gives access to all postman commands
+    children:
+      openmail.postman.createother: true
+      openmail.postman.removeother: true
 
-    mailbox.postman.*:
-        description: Gives access to all doorman commands
-        children:
-            mailbox.postman.createother: true
-            mailbox.postman.removeother: true
+  openmail.user.create:
+    description: Can create own mailbox.
+    default: true
 
-    mailbox.user.create:
-        description: Can create own mailbox.
-        default: true
+  openmail.user.send:
+    description: Can send a package.
+    default: true
 
-    mailbox.user.send:
-        description: Can send a package.
-        default: true
+  openmail.user.remove:
+    description: Can remove own mailbox.
+    default: true
 
-    mailbox.user.remove:
-        description: Can remove own mailbox.
-        default: true
+  openmail.admin.viewlog:
+    description: Can view a log.
+    default: op
 
-    mailbox.admin.viewlog:
-        description: Can view a log.
-        default: op
+  openmail.admin.removeany:
+    description: Can remove any mailbox.
+    default: op
 
-    mailbox.admin.removeany:
-        description: Can remove any mailbox.
-        default: op
+  openmail.postman.createother:
+    description: Can create a mailbox for someone else.
+    default: op
 
-    mailbox.postman.createother:
-        description: Can create a mailbox for someone else.
-        default: op
+  openmail.postman.removeother:
+    description: Can remove mailboxes which he created.
+    default: op
 
-    mailbox.postman.removeother:
-        description: Can remove mailboxes which he created.
-        default: op
+  openmail.nocooldown:
+    description: Player does not have the send cooldown.
+    default: op
 
-    mailbox.nocooldown:
-        description: Player does not have the send cooldown.
-        default: op
-
-    mailbox.sendtoself:
-        description: Player can send package to himself.
-        default: op
+  openmail.sendtoself:
+    description: Player can send package to himself.
+    default: op

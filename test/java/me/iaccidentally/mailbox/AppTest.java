@@ -1,4 +1,4 @@
-package me.iaccidentally.mailbox;
+package me.pjt.mailbox;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
